@@ -1,0 +1,6 @@
+Średnia długość słowa kodowego:  8.00390625
+Współczynnik kompresji:  0.9992690671505245
+8
+Entropia:  8
+Wykonanie: 5.813s
+Kompresja ukonczona
