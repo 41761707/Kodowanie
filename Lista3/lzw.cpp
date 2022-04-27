@@ -15,9 +15,9 @@ class EliasCodes
     std::vector<bool> omegaCoding(std::vector<int> &numbers);
     std::vector<bool> fibonacciCoding(std::vector<int> &numbers);
     std::vector<int>  gammaDecoding(std::vector<bool>&result,int reminder);
-    void deltaDecoding();
-    void omegaDecoding();
-    void fibonacciDecoding();
+    std::vector<int>  deltaDecoding(std::vector<bool>&result, int reminder);
+    std::vector<int>  omegaDecoding(std::vector<bool>& result, int reminder);
+    std::vector<int>  fibonacciDecoding(std::vector<bool>& result, int reminder);
 };
 
 std::string decToBin(int number)
@@ -77,7 +77,7 @@ std::vector<bool> EliasCodes::deltaCoding(std::vector<int> &numbers)
         {
             result.push_back(nString[j]-'0');
         }
-        for(int j=0;j<current.size();j++)
+        for(int j=1;j<current.size();j++)
         {
             result.push_back(current[j]-'0');
         }
@@ -109,6 +109,143 @@ std::vector<int> EliasCodes::gammaDecoding(std::vector<bool>&result,int reminder
             numbers.push_back(binToDec(digit));
         }
 
+    }
+    return numbers;
+}
+
+std::vector<int> EliasCodes::deltaDecoding(std::vector<bool>& result, int reminder)
+{
+    std::vector<int> numbers;
+    int counter = 0;
+    for (int i = 0; i < result.size() - (9 - reminder); i++)
+    {
+        if (result[i] == 0)
+            counter++;
+        else
+        {
+            if (counter == 0)
+                numbers.push_back(1);
+            else 
+            {
+                std::string temp = "";
+                while (counter > 0)
+                {
+                    temp.append(std::to_string(result[i]));
+                    i++;
+                    counter--;
+                }
+                int n = binToDec(temp);
+                std::string res = "1";
+                for (int j = 1; j < n; j++)
+                {
+                    res.append(std::to_string(result[i]));
+                    i++;
+                }
+                i--;
+                numbers.push_back(binToDec(res));
+            }
+        }
+    }
+    return numbers;
+}
+std::vector<bool> EliasCodes::omegaCoding(std::vector<int>& numbers)
+{
+    std::vector<bool> result{};
+    for (int i = 0; i < numbers.size(); i++)
+    {
+        std::string outcome = "0";
+        std::string temp="";
+        int number = numbers[i];
+        while (number > 1)
+        {
+            temp = decToBin(number);
+            outcome = temp + outcome;
+            number = temp.size() - 1;
+        }
+        for (int j = 0; j < outcome.size(); j++)
+        {
+            result.push_back(outcome[j] - '0');
+        }
+    }
+    return result; 
+}
+
+std::vector<int> EliasCodes::omegaDecoding(std::vector<bool>& result, int reminder)
+{
+    std::vector<int> numbers;
+    for (int i = 0; i < result.size() - (9 - reminder); i++)
+    {
+        int res = 1;
+        for (int j = i; j < result.size() - (9 - reminder); j++)
+        {
+            if (result[j] == 0)
+                break;
+            int temp = 0;
+            for (int k = j; k < j+res+1; k++)
+                temp += result[k] * (1 << (j+res - k));
+            j = j+res;
+            i = j+1;
+            res = temp;
+        }
+        numbers.push_back(res);
+    }
+    return numbers;
+}
+
+std::vector<bool> EliasCodes::fibonacciCoding(std::vector<int>& numbers)
+{
+    std::vector<bool> result{};
+    std::vector<int> fibb{1,2};
+    std::vector<bool> tempRes{};
+    for (int i = 0; i < numbers.size(); i++)
+    {
+        while (numbers[i] >= fibb[fibb.size() - 1])
+            fibb.push_back(fibb[fibb.size() - 1] + fibb[fibb.size() - 2]);
+        for (int j = 0; j < fibb.size(); j++)
+        {
+            if (numbers[i] < fibb[j])
+                break;
+            tempRes.push_back(0);
+        }
+        int temp = numbers[i];
+        while (temp > 0)
+        {
+            for (int j = 0; j < fibb.size(); j++)
+            {
+                if (temp < fibb[j])
+                {
+                    temp -= fibb[j-1];
+                    tempRes[j-1] = 1;
+                    break;
+                }
+            }
+        }
+        tempRes.push_back(1);
+        result.insert(result.end(), tempRes.begin(), tempRes.end());
+        tempRes.clear();
+    }
+    return result; 
+}
+
+std::vector<int> EliasCodes::fibonacciDecoding(std::vector<bool>& result, int reminder)
+{
+    std::vector<int> numbers;
+    std::vector<bool> tempRes{};
+    std::vector<int> fibb{1,2};
+    for (int i = 0; i < result.size() - 9 + reminder; i++){
+        bool prev = 0;
+        while ((prev && result[i]) == 0){
+            prev = result[i];
+            tempRes.push_back(prev);
+            i++;
+        }
+        while (tempRes.size() > fibb.size())
+            fibb.push_back(fibb[fibb.size() - 1] + fibb[fibb.size() - 2]);
+        int val = 0;
+        for (int j = 0; j < tempRes.size(); j++)
+            val += tempRes[j] * fibb[j];
+        numbers.push_back(val);
+        tempRes.clear();
     }
     return numbers;
 }
@@ -210,6 +347,10 @@ int main(int argc, char* argv[])
                         numbers.push_back(a);
                     }
                     toFile=elias.deltaCoding(numbers);
+                    /*for(int i=0;i<toFile.size();i++)
+                    {
+                        std::cout<<toFile[i];
+                    }*/
                     reminder &=(toFile.size()%8)+1;
                     out.write(&reminder,1);
                     for(int i=0;i<toFile.size();i++)
@@ -230,8 +371,62 @@ int main(int argc, char* argv[])
                     }
                 break;
                 case omega:
+                    while (file >> a)
+                    {
+                        numbers.push_back(a);
+                    }
+                    toFile=elias.omegaCoding(numbers);
+                    /*for(int i=0;i<toFile.size();i++)
+                    {
+                        std::cout<<toFile[i];
+                    }*/
+                    reminder &=(toFile.size()%8)+1;
+                    out.write(&reminder,1);
+                    for(int i=0;i<toFile.size();i++)
+                    {
+                        if(toFile[i])
+                        {
+                            encoded |= (temp << 7-(i%8));
+                        }
+                        if((i+1)%8==0)
+                        {
+                            out.write(&encoded,1);
+                            encoded=0b00000000;
+                        }
+                    }
+                    if(reminder>0)
+                    {
+                        out.write(&encoded,1);
+                    }
                 break;
                 case fibonacci:
+                    while (file >> a)
+                    {
+                        numbers.push_back(a);
+                    }
+                    toFile=elias.fibonacciCoding(numbers);
+                    /*for(int i=0;i<toFile.size();i++)
+                    {
+                        std::cout<<toFile[i];
+                    }*/
+                    reminder &=(toFile.size()%8)+1;
+                    out.write(&reminder,1);
+                    for(int i=0;i<toFile.size();i++)
+                    {
+                        if(toFile[i])
+                        {
+                            encoded |= (temp << 7-(i%8));
+                        }
+                        if((i+1)%8==0)
+                        {
+                            out.write(&encoded,1);
+                            encoded=0b00000000;
+                        }
+                    }
+                    if(reminder>0)
+                    {
+                        out.write(&encoded,1);
+                    }
                 break;
                 default:
                     std::cout << "Unsupported coding, choose one from the list down below: \n";
@@ -276,10 +471,94 @@ int main(int argc, char* argv[])
                     }
                 break;
                 case delta:
+                    while(file.get(byte))
+                    {
+                        ubyte=byte;
+                        break;
+                    }
+                    while(file.get(byte))
+                    {
+                        for(int i=0;i<8;i++)
+                        {
+                            if((byte>>(7-i)) &0b1)
+                            {
+                                data.push_back(1);
+                            }
+                            else
+                            {
+                                data.push_back(0);
+                            }
+                        }
+                    }
+                    /*for(int i=0;i<data.size()-(9-int(ubyte));i++)
+                    {
+                        std::cout<<data[i];
+                    }*/
+                    numbers=elias.deltaDecoding(data,int(ubyte));
+                    for(int i=0;i<numbers.size();i++)
+                    {
+                        out << numbers[i] << " ";
+                    }
                 break;
                 case omega:
+                    while(file.get(byte))
+                    {
+                        ubyte=byte;
+                        break;
+                    }
+                    while(file.get(byte))
+                    {
+                        for(int i=0;i<8;i++)
+                        {
+                            if((byte>>(7-i)) &0b1)
+                            {
+                                data.push_back(1);
+                            }
+                            else
+                            {
+                                data.push_back(0);
+                            }
+                        }
+                    }
+                    /*for(int i=0;i<data.size()-(9-int(ubyte));i++)
+                    {
+                        std::cout<<data[i];
+                    }*/
+                    numbers=elias.omegaDecoding(data,int(ubyte));
+                    for(int i=0;i<numbers.size();i++)
+                    {
+                        out << numbers[i] << " ";
+                    }
                 break;
                 case fibonacci:
+                    while(file.get(byte))
+                    {
+                        ubyte=byte;
+                        break;
+                    }
+                    while(file.get(byte))
+                    {
+                        for(int i=0;i<8;i++)
+                        {
+                            if((byte>>(7-i)) &0b1)
+                            {
+                                data.push_back(1);
+                            }
+                            else
+                            {
+                                data.push_back(0);
+                            }
+                        }
+                    }
+                    /*for(int i=0;i<data.size()-(9-int(ubyte));i++)
+                    {
+                        std::cout<<data[i];
+                    }*/
+                    numbers=elias.fibonacciDecoding(data,int(ubyte));
+                    for(int i=0;i<numbers.size();i++)
+                    {
+                        out << numbers[i] << " ";
+                    }
                 break;
                 default:
                     std::cout << "Unsupported coding, choose one from the list down below: \n";

@@ -1,0 +1,128 @@
+gamma Tadeusz
+Entropia:  5.039221909655788
+Czas trwania kodowania: .720106700
+pan-tadeusz-czyli-ostatni-zajazd-na-litwie.txt : 482542
+encode.txt : 366557
+Współczynnik kompresji: 
+1.31
+Czas trwania dekodowania: .504408100
+gamma test1.bin
+Entropia:  0.0
+Czas trwania kodowania: .751704200
+test1.bin : 1048576
+encode.txt : 3545
+Współczynnik kompresji: 
+295.79
+Czas trwania dekodowania: .024605800
+gamma test2.bin
+Entropia:  8.0
+Czas trwania kodowania: .526337800
+test2.bin : 1048576
+encode.txt : 75920
+Współczynnik kompresji: 
+13.81
+Czas trwania dekodowania: .126122500
+gamma test3.bin
+Entropia:  8.0
+Czas trwania kodowania: 2.736086500
+test3.bin : 1048576
+encode.txt : 1511839
+Współczynnik kompresji: 
+.69
+Czas trwania dekodowania: 1.917480500
+delta Tadeusz
+Entropia:  5.039221909655788
+Czas trwania kodowania: .865576400
+pan-tadeusz-czyli-ostatni-zajazd-na-litwie.txt : 482542
+encode.txt : 292895
+Współczynnik kompresji: 
+1.64
+Czas trwania dekodowania: .514292000
+delta test1.bin
+Entropia:  0.0
+Czas trwania kodowania: .718554900
+test1.bin : 1048576
+encode.txt : 3130
+Współczynnik kompresji: 
+335.00
+Czas trwania dekodowania: .026001000
+delta test2.bin
+Entropia:  8.0
+Czas trwania kodowania: .628049600
+test2.bin : 1048576
+encode.txt : 59733
+Współczynnik kompresji: 
+17.55
+Czas trwania dekodowania: .119743300
+delta test3.bin
+Entropia:  8.0
+Czas trwania kodowania: 2.629880200
+test3.bin : 1048576
+encode.txt : 1201502
+Współczynnik kompresji: 
+.87
+Czas trwania dekodowania: 1.865250100
+omega Tadeusz
+Entropia:  5.039221909655788
+Czas trwania kodowania: .886168600
+pan-tadeusz-czyli-ostatni-zajazd-na-litwie.txt : 482542
+encode.txt : 289748
+Współczynnik kompresji: 
+1.66
+Czas trwania dekodowania: .261605200
+omega test1.bin
+Entropia:  0.0
+Czas trwania kodowania: .751882700
+test1.bin : 1048576
+encode.txt : 3130
+Współczynnik kompresji: 
+335.00
+Czas trwania dekodowania: .022976900
+omega test2.bin
+Entropia:  8.0
+Czas trwania kodowania: .563752600
+test2.bin : 1048576
+encode.txt : 59724
+Współczynnik kompresji: 
+17.55
+Czas trwania dekodowania: .071686900
+omega test3.bin
+Entropia:  8.0
+Czas trwania kodowania: 2.884397900
+test3.bin : 1048576
+encode.txt : 1242401
+Współczynnik kompresji: 
+.84
+Czas trwania dekodowania: .876036900
+fibonacci Tadeusz
+Entropia:  5.039221909655788
+Czas trwania kodowania: .609811300
+pan-tadeusz-czyli-ostatni-zajazd-na-litwie.txt : 482542
+encode.txt : 279956
+Współczynnik kompresji: 
+1.72
+Czas trwania dekodowania: .368869300
+fibonacci test1.bin
+Entropia:  0.0
+Czas trwania kodowania: .649508100
+test1.bin : 1048576
+encode.txt : 2759
+Współczynnik kompresji: 
+380.05
+Czas trwania dekodowania: .023081000
+fibonacci test2.bin
+Entropia:  8.0
+Czas trwania kodowania: .489901400
+test2.bin : 1048576
+encode.txt : 58028
+Współczynnik kompresji: 
+18.07
+Czas trwania dekodowania: .090606600
+fibonacci test3.bin
+Entropia:  8.0
+Czas trwania kodowania: 1.960859800
+test3.bin : 1048576
+encode.txt : 1147952
+Współczynnik kompresji: 
+.91
+Czas trwania dekodowania: 1.350933000

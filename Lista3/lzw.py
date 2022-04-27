@@ -1,6 +1,6 @@
 import sys
 import time
-
+from math import log2
 
 class LZWAlgorithm:
     def encode(self,file):
@@ -27,41 +27,50 @@ class LZWAlgorithm:
 
         
     def decode(self,encoded):
-        output = []
+        result=[]
+        dictionary={}
+        code=256
+        for i in range(code):
+            dictionary[i]=bytes([i])
+        previous=encoded[0]
+        previousDict=dictionary.get(previous)
+        byte=previousDict
+        result.append(previousDict)
 
-        dictionary = {}
-        for i in range(0, 256):
-            dictionary[i] = bytes([i])
-
-        # next codeword to be inserted into the `_dict` will get this index
-        new_codeword_index = 256
-        # first number
-        prev = encoded[0]
-        prev_value = dictionary.get(prev)
-        single = prev_value
-        output.append(prev_value)
-
-        for curr in encoded[1:]:
-            prev_value = b""
-            if curr not in dictionary:
-                prev_value = dictionary.get(prev)
-                prev_value += single
+        for current in encoded[1:]:
+            previousDict=b""
+            if current not in dictionary:
+                previousDict=dictionary.get(previous)
+                previousDict+=byte
             else:
-                prev_value = dictionary.get(curr)
-            output.append(prev_value)
-            single = b""
-            single += bytes([prev_value[0]])
-            dictionary[new_codeword_index] = dictionary.get(prev) + single
-            new_codeword_index += 1
-            prev = curr
+                previousDict=dictionary.get(current)
+            result.append(previousDict)
+            byte=b""
+            byte+=bytes([previousDict[0]])
+            dictionary[code]=dictionary.get(previous)+byte
+            code=code+1
+            previous=current
 
-        return output
-        
+        return result
 
-class IO:
-    pass
+def getEntropy(file):
+    with open(file,"rb") as f:
+        chars={}
+        counter=0
+        byte=f.read(1)
+        while byte:
+            if chars.get(byte) is None:
+                chars[byte]=1
+            else:
+                chars[byte] +=1
+            counter=counter+1
+            byte=f.read(1)
 
-
+        entropy=0
+        for c in list(chars.values()):
+            entropy=entropy+c*(-log2(c))
+        entropy=entropy/counter
+        return entropy+log2(counter)
 def main():
 
     if len(sys.argv) < 5:
@@ -79,6 +88,9 @@ def main():
             for item in codingResult:
                 out.write(str(item))
                 out.write(" ")
+
+        entropy=getEntropy(inputFile)
+        print("Entropia: ",entropy)
     elif mode=="decode":
         with open(inputFile,"r") as inp:
             for line in inp:
