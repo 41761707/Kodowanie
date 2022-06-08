@@ -66,18 +66,15 @@ def diff_encoding_color(pixels,bits):
     min_value = -2**bits
     diffs = []
     result = []
-    counter = 0
     M = list(range(min_value,max_value+1))
     for item in pixels:
         temp = item - prev
         current = min(M, key=lambda x:abs(x-temp))
         diffs.append(current)
-        result.append(sum(diffs))
-        prev = result[len(result)-1]
-        counter = counter+1
-    #print(result)
+        prev = sum(diffs)
+
     
-    return result
+    return diffs
 
 
 def diff_encoding(pixels,bits):
@@ -92,6 +89,29 @@ def diff_encoding(pixels,bits):
     result_blue = diff_encoding_color(result_blue,bits)
     result_green = diff_encoding_color(result_green,bits)
     result_red = diff_encoding_color(result_red,bits)
+
+    for i in range(len(result_blue)):
+        result.append((result_blue[i],result_green[i],result_red[i]))
+    return result
+
+def diff_decoding_color(diffs):
+    result = []
+    for i in range(len(diffs)):
+        result.append(sum(diffs[:i+1]))
+    return result
+
+def diff_decoding(diffs):
+    result = []
+    result_blue = []
+    result_green = []
+    result_red = []
+    for item in diffs:
+        result_blue.append(item[0])
+        result_green.append(item[1])
+        result_red.append(item[2])
+    result_blue = diff_decoding_color(result_blue)
+    result_green = diff_decoding_color(result_green)
+    result_red = diff_decoding_color(result_red)
 
     for i in range(len(result_blue)):
         result.append((result_blue[i],result_green[i],result_red[i]))
@@ -126,9 +146,8 @@ def main():
     out = sys.argv[2]
     bits = int(sys.argv[3])
     header,footer,pixels, image_width, image_height=read_TGA(file)
-    result = diff_encoding(pixels,bits)
-
-    #diff_decoding(pixels,bits)
+    diffs = diff_encoding(pixels,bits)
+    result = diff_decoding(diffs)
     msr = msr_result(pixels,result)/3
     msr_r=msr_color(pixels,result,2)
     msr_g=msr_color(pixels,result,1)
