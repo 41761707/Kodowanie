@@ -66,7 +66,7 @@ def diff_encoding_color(pixels,bits):
     min_value = -2**bits
     diffs = []
     result = []
-    M = list(range(min_value,max_value+1))
+    M = list(range(min_value,max_value))
     for item in pixels:
         temp = item - prev
         current = min(M, key=lambda x:abs(x-temp))

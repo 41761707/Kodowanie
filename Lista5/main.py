@@ -2,7 +2,6 @@ import sys
 import math
 import time
 from collections import Counter
-#from sklearn.metrics import mean_squared_error
 
 
 def read_TGA(filename):
